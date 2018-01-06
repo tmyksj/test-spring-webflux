@@ -3,5 +3,8 @@ version: "3"
 services:
   cassandra:
     image: "cassandra"
+    volumes:
+      - "./docker/cassandra/docker-entrypoint.sh:/docker-entrypoint.sh:ro"
+      - "./docker/cassandra/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro"
     ports:
       - "9042:9042"
