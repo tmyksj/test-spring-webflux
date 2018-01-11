@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>tests-spring-webflux</title>
+    <link href="/css/stylesheet.css" rel="stylesheet">
+    <script src="/js/stylesheet.js"></script>
+    <style>
+        main {
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            height: 80vh;
+            left: 0;
+            margin: auto;
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 80vw;
+        }
+
+        div:nth-child(1) {
+            flex-grow: 1;
+            overflow-y: scroll;
+        }
+
+        li {
+            margin: 0 1rem 1rem 0;
+        }
+
+        li > span {
+            display: block;
+            font-size: 1.2rem;
+            position: relative;
+        }
+
+        li > span span {
+            font-family: monospace;
+            font-size: 0.8rem;
+            position: absolute;
+            right: 0;
+        }
+
+        li > p {
+            font-size: 1.1rem;
+            margin: 0;
+        }
+
+        form {
+            display: flex;
+        }
+
+        label:nth-child(2) {
+            flex-grow: 1;
+        }
+
+        label:nth-child(2) input {
+            box-sizing: border-box;
+            width: 100%;
+        }
+    </style>
+    <script>
+        (function() {
+            window.addEventListener("load", function(event) {
+                let ul = document.querySelector("ul");
+
+                let evtSource = new EventSource("/api/message");
+                evtSource.addEventListener("message", function(e) {
+                    let data = JSON.parse(e.data);
+                    let li = document.createElement("li");
+                    li.innerHTML =
+                        "<span>"
+                            + data.author
+                            + "<span>ID: " + data.id + "</span>"
+                        + "</span>"
+                        + "<p>" + data.body + "</p>";
+
+                    ul.appendChild(li);
+                });
+            });
+        })();
+
+        (function() {
+            window.addEventListener("load", function(event) {
+                let formSelector = "form[action=\"/api/message\"]";
+                let form = document.querySelector(formSelector);
+
+                form.addEventListener("submit", function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    let values = {};
+                    for (let field of document.querySelectorAll(formSelector + " [name]")) {
+                        values[field.name] = field.value;
+                    }
+
+                    let xhr = new XMLHttpRequest();
+                    xhr.open(form.method, form.action);
+                    xhr.setRequestHeader("Content-Type", "application/json");
+                    xhr.send(JSON.stringify(values));
+                });
+            });
+        })();
+    </script>
+</head>
+<body>
+<header>
+    <h1>tests-spring-webflux</h1>
+</header>
+<main>
+    <div>
+        <ul>
+        </ul>
+    </div>
+    <div>
+        <form action="/api/message" method="post">
+            <label>
+                <span>Username</span>
+                <input type="text" name="author">
+            </label>
+            <label>
+                <span>Message</span>
+                <input type="text" name="body">
+            </label>
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</main>
+</body>
+</html>
