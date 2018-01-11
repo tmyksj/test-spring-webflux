@@ -1,0 +1,49 @@
+html {
+    font-size: 62.5%;
+}
+
+body {
+    color: #263238;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+textarea {
+    background: transparent;
+    border: 0.2rem solid #CFD8DC;
+    border-radius: 0.4rem;
+    font-family: inherit;
+    padding: 0.2rem 0.4rem;
+    vertical-align: top;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button:focus,
+input:focus,
+textarea:focus {
+    border-color: #263238;
+    outline: 0;
+}
+
+label {
+    display: inline-block;
+    position: relative;
+}
+
+label span,
+label span {
+    color: #607D8B;
+    left: 0.6rem;
+    position: absolute;
+    top: 0.2rem;
+    z-index: -1;
+}
+
+label.dirty span,
+label.dirty span {
+    color: transparent;
+}
